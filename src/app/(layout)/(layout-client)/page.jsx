@@ -37,7 +37,7 @@ function Telegram() {
 
 
 function Page() {
-  const { nav, setNav, user, userDB, destinatario, tarifas, countries, setDestinatario, transactionDB, setTransactionDB, setUserProfile, comision, select, setSelect, select2, setSelect2, isSelect, setIsSelect, isSelect2, setIsSelect2, state, setState, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, modal, setModal, setTransferencia, transferencia, divisas, setDivisas } = useUser()
+  const { nav, setNav, user, userDB, destinatario, tarifas, countries, setComision, setDestinatario, transactionDB, setTransactionDB, setUserProfile, comision, select, setSelect, select2, setSelect2, isSelect, setIsSelect, isSelect2, setIsSelect2, state, setState, setUserSuccess, success, setUserData, postsIMG, setUserPostsIMG, modal, setModal, setTransferencia, transferencia, divisas, setDivisas } = useUser()
   const router = useRouter()
   const pathname = usePathname()
   const [modalInfo, setModalInfo] = useState(false)
@@ -100,9 +100,9 @@ function Page() {
       router.push('/Register')
       return
     }
-    if (tarifas.tarifa_1_min) {
-
-
+    console.log((((transferencia * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) < tarifas.tarifa_1_min))
+    if (((transferencia * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) < tarifas.tarifa_1_min) {
+      setModal(`INFO: El minimo de envio debe ser mayor o equvalente a ${tarifas.tarifa_1_min}`)
       return
     }
     if (comision === 'CONTACTESE CON SOPORTE') {
@@ -110,7 +110,7 @@ function Page() {
       return
     }
     if (user && userDB && userDB.habilitado !== true) {
-      setModal('INFO: No habilitado')
+      setModal(`INFO: No habilitado`)
       return
     }
 
@@ -165,8 +165,19 @@ function Page() {
   }, [destinatario, transactionDB])
 
   useEffect(() => {
-   setTransferencia(tarifas?.tarifa_1_min)
+    if (transferencia === '') {
+      setTransferencia(tarifas?.tarifa_1_min)
+      if (divisas && divisas[select] && divisas[select2] && tarifas?.tarifa_1_min && tarifas?.tarifa_1_max) {
+
+        (tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_1_max * 1 && ((tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_1_min * 1 && setComision((divisas[select]['tarifa 1'] * tarifas?.tarifa_1_min / 100).toFixed(2));
+        (tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_2_max * 1 && ((tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_2_min * 1 && setComision((divisas[select]['tarifa 2'] * tarifas?.tarifa_1_min / 100).toFixed(2));
+        (tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_3_max * 1 && ((tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_3_min * 1 && setComision((divisas[select]['tarifa 3'] * tarifas?.tarifa_1_min / 100).toFixed(2));
+        ((tarifas?.tarifa_1_min * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) > tarifas.tarifa_3_max * 1 && setComision('CONTACTESE CON SOPORTE');
+
+      }
+    }
   }, [])
+
   // console.log(userDB)
   console.log(countries)
   return (
@@ -177,7 +188,9 @@ function Page() {
         contactanos en soporte por favor.
       </ModalInfo>} */}
 
-      {modal === 'registrate' && <ModalINFO theme={'Danger'} alert={false} button="Iniciar Sesión" funcion={() => handlerRedirect('/Login')} >Inicia Sesión para continuar con tu transacción</ModalINFO>}
+      {modal === 'registrate' && <ModalINFO theme={'Danger'} alert={false} button="Iniciar Sesión" funcion={() => handlerRedirect('/Login')} close={true}>Inicia Sesión para continuar con tu transacción</ModalINFO>}
+      {/* {modal.includes('El minimo de envio debe ser') && <ModalINFO theme={'Danger'} alert={false} button="Aceptar" funcion={() => setModal('')} close={true}>{modal}</ModalINFO>} */}
+
       {/*         
         {modal === 'registrate' && <ModalINFO theme={'Danger'} alert={false} button="Iniciar Sesión" funcion={() => handlerRedirect('/Login')} >Inicia Sesión para continuar con tu transacción</ModalINFO>}
         {modal === 'registrate' && <ModalINFO theme={'Danger'} alert={false} button="Iniciar Sesión" funcion={() => handlerRedirect('/Login')} >Inicia Sesión para continuar con tu transacción</ModalINFO>}
@@ -236,7 +249,7 @@ function Page() {
             <div className='grid grid-cols-2 gap-[15px]'>
               <span className='text-white text-[14px] font-light'>Comisiones</span>
               <span className='text-white text-[14px] font-light'>
-                {comision} {select}
+              {comision} {comision !== 'CONTACTESE CON SOPORTE' ? select: ''}
               </span>
             </div>
             <br />

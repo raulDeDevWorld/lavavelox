@@ -49,6 +49,7 @@ export default function RootLayout({ children }) {
         user && user !== undefined && listenToSpecificDataEq(`/envios/`, 'user uuid', user.uid, setEnviosDB)
         user && user !== undefined && listenToSpecificDataEq(`/cambios/`, 'user uuid', user.uid, setCambiosDB)
     }, [user, userDB])
+    
     console.log(userDB)
     return (
         user !== undefined && userDB !== undefined && divisas !== undefined && <>

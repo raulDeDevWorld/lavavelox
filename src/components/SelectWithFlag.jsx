@@ -29,19 +29,14 @@ export default function App({ placeholder, value, onChange, propHandlerSelect, p
   const handlerOnChange = (e) => {
     onChange == 'Transference' && setTransferencia((e.target.value * 1).toFixed(2));
 
-    if ( divisas && divisas[select] && divisas[select2] && tarifas ) {
+    if (divisas && divisas[select] && divisas[select2] && tarifas?.tarifa_1_min && tarifas?.tarifa_1_max) {
 
-
-      console.log( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) <= tarifas.tarifa_1_min *1 && ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_1_max *1 && (divisas[select]['tarifa 1'] * e.target.value / 100).toFixed(2)
-
-      ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) <= tarifas.tarifa_1_min *1 && ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_1_max *1 && setComision((divisas[select]['tarifa 1'] * e.target.value / 100).toFixed(2));
-      ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) <= tarifas.tarifa_2_min *1 && ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_2_max *1 && setComision((divisas[select]['tarifa 2'] * e.target.value / 100).toFixed(2));
-      ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) <= tarifas.tarifa_3_min *1 && ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_3_max *1 && setComision((divisas[select]['tarifa 3'] * e.target.value / 100).toFixed(2));
-      ( (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) > tarifas.tarifa_3_max *1 && setComision('CONTACTESE CON SOPORTE');
+      (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_1_max * 1 && ((e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_1_min * 1 && setComision((divisas[select]['tarifa 1'] * e.target.value / 100).toFixed(2));
+      (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_2_max * 1 && ((e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_2_min * 1 && setComision((divisas[select]['tarifa 2'] * e.target.value / 100).toFixed(2));
+      (e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2) <= tarifas.tarifa_3_max * 1 && ((e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) >= tarifas.tarifa_3_min * 1 && setComision((divisas[select]['tarifa 3'] * e.target.value / 100).toFixed(2));
+      ((e.target.value * divisas['USDT'].compra / divisas[select].venta).toFixed(2)) > tarifas.tarifa_3_max * 1 && setComision('CONTACTESE CON SOPORTE');
 
     }
-
-
   }
 
 

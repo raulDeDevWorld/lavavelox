@@ -633,9 +633,9 @@ export default function Home() {
 
         <form className=' min-w-[1000px] w-full' onSubmit={saveTarifas}>
           <div className='bg-gray-800 grid grid-cols-7 p-1 font-bold text-[12px] uppercase'>
-            <span className='col-span-2 text-center'>Tarifa 1</span>
-            <span className='col-span-2 text-center'>Tarifa 1</span>
-            <span className='col-span-2 text-center'>Tarifa 1</span>
+            <span className='col-span-2 text-center'>Rango Tarifa 1</span>
+            <span className='col-span-2 text-center'>Rango Tarifa 2</span>
+            <span className='col-span-2 text-center'>Rango Tarifa 3</span>
             <span className='text-center'>GUARDAR</span>
           </div>
 
@@ -710,16 +710,16 @@ export default function Home() {
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio<br />
-                1 - 1000 USD
+                 {tarifas.tarifa_1_min} USD - {tarifas.tarifa_1_max} USD
               </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio <br />
-                1 001 - 10 000 USD
-              </th>
+                {tarifas.tarifa_2_min} USD - {tarifas.tarifa_2_max} USD
+                </th>
               <th scope="col" className="text-center px-3 py-3">
                 Tarifa de Envio<br />
-                10 001 - 100 000 USD
-              </th>
+                {tarifas.tarifa_3_min} USD - {tarifas.tarifa_3_max} USD
+                </th>
               <th scope="col" className="text-center px-3 py-3">
                 Guardar
               </th>
